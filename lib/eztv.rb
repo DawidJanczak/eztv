@@ -21,7 +21,7 @@ module EZTV
 
     def initialize(name)
       @name = name
-      @options = { body: {'SearchString' => @name}}
+      @options = { body: {'SearchString1' => @name}}
     end
 
     def episodes
@@ -66,7 +66,7 @@ module EZTV
 
   module EpisodeFactory
     def self.create(episodes_array)
-      episodes = episodes_array.reverse.map do |episode_hash|
+      episodes_array.reverse.map do |episode_hash|
         Episode.new(episode_hash)
       end.uniq
     end
@@ -103,6 +103,8 @@ module EZTV
 
       def set_links(episode_node)
         links_data = episode_node.css('td.forum_thread_post')[2]
+        return if links_data.css('a').empty?
+
         @magnet_link = links_data.css('a.magnet').first.attributes['href'].value
         @links = links_data.css('a')[2..-1].map {|a_element| a_element['href'] }
       end
